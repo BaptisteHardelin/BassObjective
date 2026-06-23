@@ -1,7 +1,7 @@
 enum SongStatus {
-  TODO,
-  DOING,
-  DONE,
+  TODO = 'TODO',
+  DOING = 'DOING',
+  DONE = 'DONE',
 }
 
 export { SongStatus };

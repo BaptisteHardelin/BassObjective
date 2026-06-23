@@ -3,8 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm/browser/data-source/index.js';
 import { Song } from './song/entities/song.entity';
+import { DataSource } from 'typeorm';
+import { SongModule } from './song/song.module';
 
 @Module({
   imports: [
@@ -12,15 +13,12 @@ import { Song } from './song/entities/song.entity';
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: process.env.DB_HOST || 'localhost',
-      port: 3306,
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: 'bassObjective',
+      type: 'better-sqlite3',
+      database: 'bassObjective.sqlite',
       entities: [Song],
       synchronize: process.env.DB_SYNC?.toString() === 'true',
     }),
+    SongModule,
   ],
   controllers: [AppController],
   providers: [AppService],
