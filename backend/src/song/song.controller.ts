@@ -57,4 +57,9 @@ export class SongController {
   ) {
     return this.songService.update(+id, updateData);
   }
+
+  @Patch(':id/done')
+  markAsDone(@Param('id') id: string) {
+    return this.songService.markAsDone(+id);
+  }
 }

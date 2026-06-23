@@ -5,6 +5,7 @@ import { Song } from './entities/song.entity';
 import { Repository } from 'typeorm/browser/repository/Repository.js';
 import { FindOptionsWhere } from 'typeorm/browser/find-options/FindOptionsWhere.js';
 import { ILike } from 'typeorm/browser/find-options/operator/ILike.js';
+import { SongStatus } from './entities/SongStatus';
 
 @Injectable()
 export class SongService {
@@ -50,6 +51,19 @@ export class SongService {
     if (!song) throw new NotFoundException('Song Not Found');
 
     Object.assign(song, updateData);
+    return await this.songRepository.save(song);
+  }
+
+  async markAsDone(id: number): Promise<Song> {
+    const song = await this.songRepository.findOneBy({ id });
+
+    if (!song) {
+      throw new NotFoundException(`Song with ID ${id} not found`);
+    }
+
+    song.status = SongStatus.DONE;
+    song.completionDate = new Date();
+
     return await this.songRepository.save(song);
   }
 }
