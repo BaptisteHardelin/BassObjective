@@ -15,6 +15,10 @@ export class SongService {
     return `This action returns a #${id} song`;
   }
 
+  findByArtistOrSongName(artist?: string, songName?: string) {
+    return `This action returns songs by artist: ${artist} or song name: ${songName}`;
+  }
+
   remove(id: number) {
     return `This action removes a #${id} song`;
   }
