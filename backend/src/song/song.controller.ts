@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   Query,
+  Patch,
 } from '@nestjs/common';
 import { SongService } from './song.service';
 import { CreateSongDto } from './dto/create-song.dto';
@@ -47,5 +48,13 @@ export class SongController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.songService.remove(+id);
+  }
+
+  @Patch(':id')
+  updateStatus(
+    @Param('id') id: string,
+    @Body() updateData: { status: string },
+  ) {
+    return this.songService.update(+id, updateData);
   }
 }
