@@ -19,6 +19,20 @@ export class SongController {
     return this.songService.create(createSongDto);
   }
 
+  @Get('search')
+  findByArtistOrSongName(
+    @Query('artist') artist?: string,
+    @Query('songName') songName?: string,
+  ) {
+    const filterArtist = typeof artist === 'string' ? artist : null;
+    const filterSongName = typeof songName === 'string' ? songName : null;
+
+    return this.songService.findByArtistOrSongName(
+      filterArtist,
+      filterSongName,
+    );
+  }
+
   @Get()
   findAll() {
     return this.songService.findAll();
@@ -26,15 +40,8 @@ export class SongController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
+    if (isNaN(+id)) return;
     return this.songService.findOne(+id);
-  }
-
-  @Get('search/*')
-  findByArtistOrSongName(
-    @Query('artist') artist?: string,
-    @Query('songName') songName?: string,
-  ) {
-    return this.songService.findByArtistOrSongName(artist, songName);
   }
 
   @Delete(':id')

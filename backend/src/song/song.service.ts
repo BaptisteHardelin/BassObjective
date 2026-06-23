@@ -3,6 +3,8 @@ import { CreateSongDto } from './dto/create-song.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Song } from './entities/song.entity';
 import { Repository } from 'typeorm/browser/repository/Repository.js';
+import { FindOptionsWhere } from 'typeorm/browser/find-options/FindOptionsWhere.js';
+import { ILike } from 'typeorm/browser/find-options/operator/ILike.js';
 
 @Injectable()
 export class SongService {
@@ -22,8 +24,21 @@ export class SongService {
     return this.songRepository.findOneBy({ id });
   }
 
-  findByArtistOrSongName(artist?: string, songName?: string) {
-    return `This action returns songs by artist: ${artist} or song name: ${songName}`;
+  async findByArtistOrSongName(
+    artist?: string | null,
+    songName?: string | null,
+  ): Promise<Song[]> {
+    const query: FindOptionsWhere<Song> = {};
+
+    if (typeof artist === 'string' && artist.trim().length > 0) {
+      query.artist = ILike(`%${artist}%`); // Cherche tout ce qui contient la chaîne
+    }
+
+    if (typeof songName === 'string' && songName.trim().length > 0) {
+      query.title = ILike(`%${songName}%`);
+    }
+
+    return await this.songRepository.find({ where: query });
   }
 
   async remove(id: number): Promise<void> {
