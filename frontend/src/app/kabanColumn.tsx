@@ -1,21 +1,19 @@
 import { Text, View, StyleSheet, ScrollView } from "react-native";
 import Song from "./song";
 
-const KabanColumn = () => {
+type kanbanColumNName = {
+  name: string;
+};
+
+const KabanColumn = (props: kanbanColumNName) => {
   return (
     <View style={styles.columnContainer}>
-      <Text style={styles.columnTitle}>TODO</Text>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Song />
-        <Song />
-        <Song />
-        <Song />
-        <Song />
-        <Song />
-        <Song />
-        <Song />
-        <Song />
-        <Song />
+      <Text style={styles.columnTitle}>{props.name}</Text>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        nestedScrollEnabled={true}
+        contentContainerStyle={{ paddingBottom: 20 }}
+      >
         <Song />
       </ScrollView>
     </View>
