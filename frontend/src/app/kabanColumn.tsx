@@ -1,30 +1,46 @@
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, ScrollView } from "react-native";
 import Song from "./song";
 
 const KabanColumn = () => {
   return (
     <View style={styles.columnContainer}>
       <Text style={styles.columnTitle}>TODO</Text>
-      <Song />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Song />
+        <Song />
+        <Song />
+        <Song />
+        <Song />
+        <Song />
+        <Song />
+        <Song />
+        <Song />
+        <Song />
+        <Song />
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   columnContainer: {
-    backgroundColor: "#000000",
-    borderRadius: 10,
-    marginHorizontal: 10,
-    padding: 10,
-    width: 300,
+    alignSelf: "center",
+    marginTop: 16,
+    backgroundColor: "#102636",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#3A3A3C",
+    marginHorizontal: 8,
+    padding: 16,
+    width: "90%",
+    height: 600,
   },
   columnTitle: {
-    color: "#FFFFFF",
-    fontSize: 18,
+    color: "#F5FBEF",
+    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 12,
   },
-  columnSong: {},
 });
 
 export default KabanColumn;

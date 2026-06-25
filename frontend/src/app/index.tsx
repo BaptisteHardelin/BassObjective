@@ -11,7 +11,7 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#000000",
+    backgroundColor: "#02111B",
     width: "100%",
     height: "100%",
   }
