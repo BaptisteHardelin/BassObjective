@@ -5,6 +5,7 @@ export type SongData = {
   id: string;
   title: string;
   artist: string;
+  status: "TODO" | "DOING" | "DONE";
 };
 
 export type SongPayload = {

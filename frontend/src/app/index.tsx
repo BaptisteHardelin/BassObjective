@@ -1,32 +1,52 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { DraxProvider } from "react-native-drax";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import KabanColumn from "./kabanColumn";
 import { SongData } from "./song";
 
 type ColumnName = "TODO" | "DOING" | "DONE";
 type Columns = Record<ColumnName, SongData[]>;
 
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 const COLUMN_ORDER: ColumnName[] = ["TODO", "DOING", "DONE"];
 
 const INITIAL_COLUMNS: Columns = {
-  TODO: [
-    { id: "1", title: "Animosity", artist: "The Warning" },
-    { id: "2", title: "Choke", artist: "The Warning" },
-  ],
-  DOING: [{ id: "3", title: "Martirio", artist: "The Warning" }],
+  TODO: [],
+  DOING: [],
   DONE: [],
 };
 
 export default function HomeScreen() {
   const [columns, setColumns] = useState<Columns>(INITIAL_COLUMNS);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const moveSong = (
-    songId: string,
-    fromColumn: string,
-    toColumn: string
-  ) => {
+  const loadAllSongs = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`${API_URL}/song`);
+      const allSongs: SongData[] = response.data;
+
+      const newColumns: Columns = {
+        TODO: allSongs.filter((s) => s.status === "TODO"),
+        DOING: allSongs.filter((s) => s.status === "DOING"),
+        DONE: allSongs.filter((s) => s.status === "DONE"),
+      };
+
+      setColumns(newColumns);
+    } catch (error) {
+      console.error("Error fetching songs:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadAllSongs();
+  }, []);
+
+  const moveSong = (songId: string, fromColumn: string, toColumn: string) => {
     if (fromColumn === toColumn) return;
 
     setColumns((prev) => {
