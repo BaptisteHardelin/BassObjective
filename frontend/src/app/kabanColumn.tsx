@@ -1,22 +1,28 @@
-import { Text, View, StyleSheet, ScrollView } from "react-native";
-import Song from "./song";
+import { Text, StyleSheet } from "react-native";
+import { DraxView } from "react-native-drax";
+import Song, { SongData, SongPayload } from "./song";
 
-type kanbanColumNName = {
+type KabanColumnProps = {
   name: string;
+  songs: SongData[];
+  onDropSong: (songId: string, fromColumn: string, toColumn: string) => void;
 };
 
-const KabanColumn = (props: kanbanColumNName) => {
+const KabanColumn = ({ name, songs, onDropSong }: KabanColumnProps) => {
   return (
-    <View style={styles.columnContainer}>
-      <Text style={styles.columnTitle}>{props.name}</Text>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        nestedScrollEnabled={true}
-        contentContainerStyle={{ paddingBottom: 20 }}
-      >
-        <Song />
-      </ScrollView>
-    </View>
+    <DraxView
+      style={styles.columnContainer}
+      receivingStyle={styles.receiving}
+      onReceiveDragDrop={({ dragged }) => {
+        const payload = dragged.payload as SongPayload;
+        onDropSong(payload.id, payload.column, name);
+      }}
+    >
+      <Text style={styles.columnTitle}>{name}</Text>
+      {songs.map((song) => (
+        <Song key={song.id} song={song} column={name} />
+      ))}
+    </DraxView>
   );
 };
 
@@ -31,7 +37,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     padding: 16,
     width: "90%",
-    height: 600,
+    minHeight: 200,
+  },
+  receiving: {
+    borderColor: "#cf5f34",
+    borderWidth: 2,
   },
   columnTitle: {
     color: "#F5FBEF",

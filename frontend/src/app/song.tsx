@@ -1,11 +1,35 @@
-import { View, Text, StyleSheet } from "react-native";
+import { Text, StyleSheet } from "react-native";
+import { DraxView } from "react-native-drax";
 
-const Song = () => {
+export type SongData = {
+  id: string;
+  title: string;
+  artist: string;
+};
+
+export type SongPayload = {
+  id: string;
+  column: string;
+};
+
+type SongProps = {
+  song: SongData;
+  column: string;
+};
+
+const Song = ({ song, column }: SongProps) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.songTitle}>Animosity</Text>
-      <Text style={styles.songArtist}>The Warning</Text>
-    </View>
+    <DraxView
+      style={styles.container}
+      draggingStyle={styles.dragging}
+      dragReleasedStyle={styles.dragging}
+      hoverDraggingStyle={styles.hoverDragging}
+      longPressDelay={150}
+      payload={{ id: song.id, column } satisfies SongPayload}
+    >
+      <Text style={styles.songTitle}>{song.title}</Text>
+      <Text style={styles.songArtist}>{song.artist}</Text>
+    </DraxView>
   );
 };
 
@@ -17,6 +41,12 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     borderWidth: 1,
     borderColor: "#2D5B73",
+  },
+  dragging: {
+    opacity: 0.3,
+  },
+  hoverDragging: {
+    borderColor: "#cf5f34",
   },
   songTitle: {
     color: "#F5FBEF",
