@@ -9,6 +9,15 @@ type SongProps = {
   column: SongStatus;
 };
 
+/** Formats an ISO date string as DD/MM/YYYY. */
+const formatDate = (isoDate: string): string => {
+  const date = new Date(isoDate);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
 const Song = ({ song, column }: SongProps) => {
   return (
     <DraxView
@@ -23,7 +32,7 @@ const Song = ({ song, column }: SongProps) => {
       <Text style={styles.songArtist}>{song.artist}</Text>
       {song.completionDate && (
         <Text style={styles.completionDate}>
-          Done on {new Date(song.completionDate).toLocaleDateString()}
+          Done on {formatDate(song.completionDate)}
         </Text>
       )}
     </DraxView>
