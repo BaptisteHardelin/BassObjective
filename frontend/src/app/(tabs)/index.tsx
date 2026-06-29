@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, View } from "react-native";
 import { DraxProvider } from "react-native-drax";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import KabanColumn from "./kabanColumn";
+import KabanColumn from "@/components/kabanColumn";
 import { useSongBoard } from "@/hooks/useSongBoard";
 import { SONG_STATUSES } from "@/types/song";
 
