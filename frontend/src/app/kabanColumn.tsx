@@ -1,11 +1,16 @@
 import { Text, StyleSheet } from "react-native";
 import { DraxView } from "react-native-drax";
 import Song, { SongData, SongPayload } from "./song";
+import type { SongStatus } from "@/types/song";
 
 type KabanColumnProps = {
-  name: string;
+  name: SongStatus;
   songs: SongData[];
-  onDropSong: (songId: string, fromColumn: string, toColumn: string) => void;
+  onDropSong: (
+    songId: string,
+    fromColumn: SongStatus,
+    toColumn: SongStatus,
+  ) => void;
 };
 
 const KabanColumn = ({ name, songs, onDropSong }: KabanColumnProps) => {

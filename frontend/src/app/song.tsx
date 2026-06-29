@@ -1,21 +1,12 @@
 import { Text, StyleSheet } from "react-native";
 import { DraxView } from "react-native-drax";
+import type { SongData, SongPayload, SongStatus } from "@/types/song";
 
-export type SongData = {
-  id: string;
-  title: string;
-  artist: string;
-  status: "TODO" | "DOING" | "DONE";
-};
-
-export type SongPayload = {
-  id: string;
-  column: string;
-};
+export type { SongData, SongPayload } from "@/types/song";
 
 type SongProps = {
   song: SongData;
-  column: string;
+  column: SongStatus;
 };
 
 const Song = ({ song, column }: SongProps) => {
