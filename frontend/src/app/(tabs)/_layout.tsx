@@ -5,6 +5,7 @@ export default function BassObjectiveTab() {
     <Tabs screenOptions={{ headerShown: false }}>
       <Tabs.Screen name="createSong" options={{ title: "Create Song" }} />
       <Tabs.Screen name="index" options={{ title: "Todo Song" }} />
+      <Tabs.Screen name="dictionary" options={{ title: "All Song" }} />
     </Tabs>
   );
 }

@@ -8,6 +8,21 @@ export async function fetchSongs(): Promise<SongData[]> {
   return data;
 }
 
+/**
+ * Searches songs by artist and/or title (case-insensitive "contains").
+ * Empty strings are ignored by the backend, so passing both empty returns all songs.
+ * Maps to GET /song/search?artist=...&songName=...
+ */
+export async function searchSongs(
+  artist: string,
+  songName: string,
+): Promise<SongData[]> {
+  const { data } = await axios.get<SongData[]>(`${API_URL}/song/search`, {
+    params: { artist, songName },
+  });
+  return data;
+}
+
 export async function updateSongStatus(
   songId: string,
   status: SongStatus,
