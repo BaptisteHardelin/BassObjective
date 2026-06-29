@@ -1,3 +1,5 @@
+import { useFocusEffect } from "expo-router";
+import { useCallback } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { DraxProvider } from "react-native-drax";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -6,7 +8,14 @@ import { useSongBoard } from "@/hooks/useSongBoard";
 import { SONG_STATUSES } from "@/types/song";
 
 export default function HomeScreen() {
-  const { columns, moveSong } = useSongBoard();
+  const { columns, moveSong, reload } = useSongBoard();
+
+  // Refresh the board every time the tab regains focus (e.g. after creating a song).
+  useFocusEffect(
+    useCallback(() => {
+      reload();
+    }, [reload]),
+  );
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

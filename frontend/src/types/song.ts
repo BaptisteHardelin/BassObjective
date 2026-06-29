@@ -15,4 +15,9 @@ export type SongPayload = {
   column: SongStatus;
 };
 
+export type SongCreateDto = {
+  title: string;
+  artist: string;
+};
+
 export type Columns = Record<SongStatus, SongData[]>;

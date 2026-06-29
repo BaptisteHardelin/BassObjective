@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { SongData, SongStatus } from "@/types/song";
+import type { SongCreateDto, SongData, SongStatus } from "@/types/song";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -26,5 +26,14 @@ export async function markSongAsDone(songId: string): Promise<SongData> {
   const { data } = await axios.patch<SongData>(
     `${API_URL}/song/${songId}/done`,
   );
+  return data;
+}
+
+export async function addSong(song: SongCreateDto): Promise<SongData> {
+  const { data } = await axios.post<SongData>(`${API_URL}/song`, {
+    title: song.title,
+    artist: song.artist,
+  });
+
   return data;
 }
