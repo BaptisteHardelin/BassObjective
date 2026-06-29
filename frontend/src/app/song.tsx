@@ -21,6 +21,11 @@ const Song = ({ song, column }: SongProps) => {
     >
       <Text style={styles.songTitle}>{song.title}</Text>
       <Text style={styles.songArtist}>{song.artist}</Text>
+      {song.completionDate && (
+        <Text style={styles.completionDate}>
+          Done on {new Date(song.completionDate).toLocaleDateString()}
+        </Text>
+      )}
     </DraxView>
   );
 };
@@ -50,6 +55,11 @@ const styles = StyleSheet.create({
     color: "#F5FBEF",
     opacity: 0.7,
     fontSize: 14,
+  },
+  completionDate: {
+    color: "#cf5f34",
+    fontSize: 12,
+    marginTop: 6,
   },
 });
 

@@ -11,6 +11,20 @@ export async function fetchSongs(): Promise<SongData[]> {
 export async function updateSongStatus(
   songId: string,
   status: SongStatus,
-): Promise<void> {
-  await axios.patch(`${API_URL}/song/${songId}`, { status });
+): Promise<SongData> {
+  const { data } = await axios.patch<SongData>(`${API_URL}/song/${songId}`, {
+    status,
+  });
+  return data;
+}
+
+/**
+ * Marks a song as done. Unlike updateSongStatus, the backend also stamps
+ * the song's completionDate (PATCH /song/:id/done). Returns the updated song.
+ */
+export async function markSongAsDone(songId: string): Promise<SongData> {
+  const { data } = await axios.patch<SongData>(
+    `${API_URL}/song/${songId}/done`,
+  );
+  return data;
 }

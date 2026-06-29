@@ -7,6 +7,7 @@ export type SongData = {
   title: string;
   artist: string;
   status: SongStatus;
+  completionDate: string | null;
 };
 
 export type SongPayload = {
