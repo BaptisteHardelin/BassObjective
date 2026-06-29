@@ -51,6 +51,14 @@ export class SongService {
     if (!song) throw new NotFoundException('Song Not Found');
 
     Object.assign(song, updateData);
+
+    // Keep completionDate consistent with the status: stamp it when the song
+    // becomes done (unless it already has one), clear it otherwise.
+    song.completionDate =
+      song.status === SongStatus.DONE
+        ? (song.completionDate ?? new Date())
+        : null;
+
     return await this.songRepository.save(song);
   }
 
