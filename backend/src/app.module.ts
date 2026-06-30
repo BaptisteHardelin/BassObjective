@@ -14,7 +14,7 @@ import { SongModule } from './song/song.module';
     }),
     TypeOrmModule.forRoot({
       type: 'better-sqlite3',
-      database: 'bassObjective.sqlite',
+      database: process.env.DATABASE_PATH ?? 'bassObjective.sqlite',
       entities: [Song],
       synchronize: process.env.DB_SYNC?.toString() === 'true',
     }),

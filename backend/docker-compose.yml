@@ -1,0 +1,16 @@
+services:
+  api:
+    build: .
+    container_name: bassobjective-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      # Creates/updates the schema automatically. Fine for this app; turn off
+      # once you introduce real migrations.
+      DB_SYNC: "true"
+      DATABASE_PATH: /app/data/bassObjective.sqlite
+    volumes:
+      # Persists the SQLite file on the NAS so data survives redeploys.
+      - ./data:/app/data

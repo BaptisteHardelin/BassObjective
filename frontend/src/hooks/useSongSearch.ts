@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { searchSongs } from "@/api/songApi";
+import { useCallback, useEffect, useState } from "react";
+import { deleteSong, searchSongs } from "@/api/songApi";
 import type { SongData } from "@/types/song";
 
 /** Merges two song lists, dropping duplicates by id. */
@@ -51,5 +51,14 @@ export function useSongSearch() {
     };
   }, [query]);
 
-  return { query, setQuery, results, loading };
+  const removeSong = useCallback(async (id: string) => {
+    try {
+      await deleteSong(id);
+      setResults((prev) => prev.filter((song) => song.id !== id));
+    } catch (error) {
+      console.error("Error deleting song:", error);
+    }
+  }, []);
+
+  return { query, setQuery, results, loading, removeSong };
 }

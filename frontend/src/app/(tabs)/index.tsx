@@ -1,9 +1,9 @@
 import { useFocusEffect } from "expo-router";
 import { useCallback } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { DraxProvider } from "react-native-drax";
+import { StyleSheet, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import KabanColumn from "@/components/kabanColumn";
+import DragBoard from "@/components/dnd/DragBoard";
 import { useSongBoard } from "@/hooks/useSongBoard";
 import { SONG_STATUSES } from "@/types/song";
 
@@ -19,26 +19,19 @@ export default function HomeScreen() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <DraxProvider>
-        <View style={styles.container}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingBottom: 20,
-              alignItems: "center",
-            }}
-          >
-            {SONG_STATUSES.map((status) => (
-              <KabanColumn
-                key={status}
-                name={status}
-                songs={columns[status]}
-                onDropSong={moveSong}
-              />
-            ))}
-          </ScrollView>
-        </View>
-      </DraxProvider>
+      <View style={styles.container}>
+        <DragBoard
+          onDropSong={moveSong}
+          contentContainerStyle={{
+            paddingBottom: 20,
+            alignItems: "center",
+          }}
+        >
+          {SONG_STATUSES.map((status) => (
+            <KabanColumn key={status} name={status} songs={columns[status]} />
+          ))}
+        </DragBoard>
+      </View>
     </GestureHandlerRootView>
   );
 }

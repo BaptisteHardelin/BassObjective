@@ -1,14 +1,28 @@
 import { useSongSearch } from "@/hooks/useSongSearch";
+import { Ionicons } from "@expo/vector-icons";
 import {
+  Alert,
   FlatList,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 
 export default function DictionaryScreen() {
-  const { query, setQuery, results } = useSongSearch();
+  const { query, setQuery, results, removeSong } = useSongSearch();
+
+  const confirmDelete = (id: string, title: string) => {
+    Alert.alert("Delete song", `Delete "${title}"?`, [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: () => removeSong(id),
+      },
+    ]);
+  };
 
   return (
     <View style={styles.container}>
@@ -30,9 +44,18 @@ export default function DictionaryScreen() {
         ListEmptyComponent={<Text style={styles.empty}>No songs found.</Text>}
         renderItem={({ item }) => (
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>{item.title}</Text>
-            <Text style={styles.cardArtist}>{item.artist}</Text>
-            <Text style={styles.cardStatus}>{item.status}</Text>
+            <View style={styles.cardContent}>
+              <Text style={styles.cardTitle}>{item.title}</Text>
+              <Text style={styles.cardArtist}>{item.artist}</Text>
+              <Text style={styles.cardStatus}>{item.status}</Text>
+            </View>
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={() => confirmDelete(item.id, item.title)}
+              hitSlop={8}
+            >
+              <Ionicons name="trash-outline" size={22} color="#8899A6" />
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -72,12 +95,20 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   card: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: "#1E2A38",
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
     borderColor: "#3A4B5C",
+  },
+  cardContent: {
+    flex: 1,
+  },
+  deleteButton: {
+    paddingLeft: 12,
   },
   cardTitle: {
     color: "#F5FBEF",

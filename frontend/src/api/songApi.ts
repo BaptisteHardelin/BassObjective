@@ -52,3 +52,8 @@ export async function addSong(song: SongCreateDto): Promise<SongData> {
 
   return data;
 }
+
+/** Deletes a song by id. Maps to DELETE /song/:id. */
+export async function deleteSong(songId: string): Promise<void> {
+  await axios.delete(`${API_URL}/song/${songId}`);
+}

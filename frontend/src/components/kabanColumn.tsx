@@ -1,33 +1,32 @@
-import { Text, StyleSheet } from "react-native";
-import { DraxView } from "react-native-drax";
-import Song, { SongData, SongPayload } from "./song";
-import type { SongStatus } from "@/types/song";
+import { StyleSheet, Text } from "react-native";
+import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import Song from "./song";
+import { useDragBoard } from "@/components/dnd/DragBoard";
+import type { SongData, SongStatus } from "@/types/song";
 
 type KabanColumnProps = {
   name: SongStatus;
   songs: SongData[];
-  onDropSong: (
-    songId: string,
-    fromColumn: SongStatus,
-    toColumn: SongStatus,
-  ) => void;
 };
 
-const KabanColumn = ({ name, songs, onDropSong }: KabanColumnProps) => {
+const KabanColumn = ({ name, songs }: KabanColumnProps) => {
+  const { columnRefs, overColumn } = useDragBoard();
+
+  // Highlight the column while a card is hovering over it.
+  const style = useAnimatedStyle(() => ({
+    borderColor: overColumn.value === name ? "#cf5f34" : "#3A3A3C",
+  }));
+
   return (
-    <DraxView
-      style={styles.columnContainer}
-      receivingStyle={styles.receiving}
-      onReceiveDragDrop={({ dragged }) => {
-        const payload = dragged.payload as SongPayload;
-        onDropSong(payload.id, payload.column, name);
-      }}
+    <Animated.View
+      ref={columnRefs[name]}
+      style={[styles.columnContainer, style]}
     >
       <Text style={styles.columnTitle}>{name}</Text>
       {songs.map((song) => (
         <Song key={song.id} song={song} column={name} />
       ))}
-    </DraxView>
+    </Animated.View>
   );
 };
 
@@ -37,16 +36,12 @@ const styles = StyleSheet.create({
     marginTop: 16,
     backgroundColor: "#102636",
     borderRadius: 12,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: "#3A3A3C",
     marginHorizontal: 8,
     padding: 16,
     width: "90%",
     minHeight: 200,
-  },
-  receiving: {
-    borderColor: "#cf5f34",
-    borderWidth: 2,
   },
   columnTitle: {
     color: "#F5FBEF",
